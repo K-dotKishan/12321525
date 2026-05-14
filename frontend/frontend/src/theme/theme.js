@@ -38,7 +38,9 @@ export const theme = createTheme({
           fontFamily: "'Outfit', sans-serif",
           fontWeight: 500,
           letterSpacing: '0.02em',
+          // this is for border radius 
           borderRadius: 8,
+          
         },
         containedPrimary: {
           background: 'linear-gradient(135deg, #d4a843 0%, #f0c96a 100%)',

@@ -2,7 +2,7 @@ import { Box, CircularProgress, Typography, Alert } from '@mui/material';
 import { useNotificationStore } from '../store/NotificationStore.jsx';
 import NotificationItem from './NotificationItem.jsx';
 
-export default function NotificationList() {
+export default function NotificationList({ showRank = false }) {
   const { state } = useNotificationStore();
   const { notifications, loading, error } = state;
 
@@ -37,8 +37,12 @@ export default function NotificationList() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-      {notifications.map((n) => (
-        <NotificationItem key={n.ID} notification={n} />
+      {notifications.map((n, i) => (
+        <NotificationItem
+          key={n.ID}
+          notification={n}
+          priorityRank={showRank ? i + 1 : undefined}
+        />
       ))}
     </Box>
   );

@@ -1,11 +1,11 @@
 import { Box, Chip, Typography, Paper } from '@mui/material';
 import { useNotificationStore } from '../store/NotificationStore.jsx';
 
-const TYPE_COLORS = {
-  Alert:   'error',
-  Info:    'info',
-  Success: 'success',
-  Warning: 'warning',
+// API types: Event, Result, Placement
+const TYPE_COLOR = {
+  Event:     'info',
+  Result:    'warning',
+  Placement: 'success',
 };
 
 function timeAgo(iso) {
@@ -18,7 +18,7 @@ function timeAgo(iso) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-export default function NotificationItem({ notification }) {
+export default function NotificationItem({ notification, priorityRank }) {
   const { state, markRead } = useNotificationStore();
   const isRead = state.readIds.has(notification.ID);
 
@@ -59,30 +59,47 @@ export default function NotificationItem({ notification }) {
 
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5, flexWrap: 'wrap' }}>
+          {/* Priority rank badge (shown on Priority Inbox page) */}
+          {priorityRank != null && (
+            <Typography
+              variant="caption"
+              sx={{
+                fontFamily: "'JetBrains Mono', monospace",
+                color: 'primary.main',
+                background: 'rgba(212,168,67,0.12)',
+                px: 0.75,
+                py: 0.25,
+                borderRadius: 1,
+                fontWeight: 700,
+                fontSize: '0.65rem',
+              }}
+            >
+              #{priorityRank}
+            </Typography>
+          )}
+
           <Typography
             variant="body2"
             sx={{
               fontWeight: isRead ? 400 : 600,
               color: isRead ? 'text.secondary' : 'text.primary',
               flex: 1,
+              wordBreak: 'break-word',
             }}
           >
-            {notification.title}
+            {notification.Message}
           </Typography>
+
           <Chip
-            label={notification.type}
-            color={TYPE_COLORS[notification.type] ?? 'default'}
+            label={notification.Type}
+            color={TYPE_COLOR[notification.Type] ?? 'default'}
             size="small"
             variant="outlined"
           />
         </Box>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.75, lineHeight: 1.5 }}>
-          {notification.message}
-        </Typography>
-
         <Typography variant="caption" sx={{ color: 'text.secondary', opacity: 0.6 }}>
-          {timeAgo(notification.timestamp)}
+          {timeAgo(notification.Timestamp)}
         </Typography>
       </Box>
     </Paper>
